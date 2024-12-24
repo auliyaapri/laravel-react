@@ -2,6 +2,8 @@ import { createInertiaApp } from '@inertiajs/inertia-react';
 import React from 'react';
 import { createRoot } from 'react-dom/client'; // Menggunakan createRoot untuk merender
 import './bootstrap';
+import '../css/app.css'; // Import Tailwind CSS
+
 
 createInertiaApp({
     resolve: name => import(`./Pages/${name}`), // Resolusi komponen berdasarkan nama
