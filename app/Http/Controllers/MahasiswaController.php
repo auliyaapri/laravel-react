@@ -11,12 +11,28 @@ class MahasiswaController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $mahasiswa = Mahasiswa::all();
-        return Inertia::render('Mahasiswa/Index', ['mahasiswa' => $mahasiswa]);
+
+        $search = $request->input('search');
+
+
+
+        $mahasiswa = Mahasiswa::when($search, function ($query, $search) {
+            return $query->where('nama_lengkap', 'like', "%{$search}%")
+                ->orWhere('nim', 'like', "%{$search}%");
+        })->paginate(10); // Tetap gunakan pagination
+
+
+        // Render halaman dengan data mahasiswa dan informasi pagination
+        return Inertia::render('Mahasiswa/Index', [
+            'mahasiswa' => $mahasiswa,
+            'search' => $search,
+
+        ]);
     }
-    
+
+
     public function formAdd()
     {
         return Inertia::render('Mahasiswa/FormTabah');
@@ -64,7 +80,6 @@ class MahasiswaController extends Controller
     {
         $mahasiswa = Mahasiswa::find($id);
         return Inertia::render('Mahasiswa/Edit', ['mahasiswa' => $mahasiswa]);
-
     }
 
     /**
@@ -72,7 +87,15 @@ class MahasiswaController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        
+        $validatedData = $request->validate([
+            'nama_lengkap' => 'required',
+            'alamat' => 'required',
+            'jenis_kelamin' => 'required',
+            'tgl_lahir' => 'required|date',
+        ]);
+
+        $mahasiswa = Mahasiswa::findOrFail($id)->update($validatedData);
+        return redirect()->route('mahasiswa.index')->with('message', 'Data mahasiswa berhasil disimpan.....');
     }
 
     /**
@@ -83,3 +106,6 @@ class MahasiswaController extends Controller
         Mahasiswa::find($id)->where('id', $id)->delete();
     }
 }
+
+
+// https://www.youtube.com/watch?v=lHvC9qBIAu4 15 menit
