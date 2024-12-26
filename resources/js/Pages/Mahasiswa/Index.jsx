@@ -64,7 +64,9 @@ export default function Index({ mahasiswa, search: initialSearch }) {
   };
 
   return (
+    
     <Layouts>
+      
       <h1 style={{ fontSize: "80px" }}>Data Mahasiswa!</h1>
       {flash.message && (
         <div className="alert mb-10 mt-3 text-2xl bg-amber-500 w-1/2 p-3 rounded-md text-white" id="flashSuccessAdd" >
@@ -76,7 +78,7 @@ export default function Index({ mahasiswa, search: initialSearch }) {
         as="button"
         type="button"
         href="mahasiswa/add"
-        className="text-white bg-indigo-500 p-3 mb-5 rounded-md"
+        className="text-white bg-indigo-500 py-2 px-3 mb-5 rounded-md"
       >
         Tambah data
       </Link>
@@ -96,7 +98,7 @@ export default function Index({ mahasiswa, search: initialSearch }) {
         />
         <button
           type="submit"
-          className="text-white bg-indigo-500 py-1 px-4 mb-5 rounded-md"
+          className="ms-1 text-white bg-indigo-500 py-1.5 px-4 rounded-md"
         >
           Search
         </button>
