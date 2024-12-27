@@ -1,0 +1,91 @@
+.vid-bg {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    min-width: 100%;
+    min-height: 100%;
+}
+
+.box {
+    width: 400px;
+    height: 400px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    text-align: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.login-box {
+    padding: 25px 60px 45px;
+    /*atas kanan kiri bawah*/
+    margin-bottom: 10px;
+}
+
+.box .btn-area {
+    background: orange;
+    height: 40px;
+    position: relative;
+    left: 25%;
+    width: 50%;
+    border-radius: 50px;
+    line-height: 35px;
+    /*mengatur tulisanya yang didalam*/
+    text-align: center;
+    font-weight: bold;
+    color: #fff;
+    margin-top: 30px;
+    cursor: pointer;
+}
+
+.box .btn-area:hover {
+    background: white;
+    color: orange;
+}
+
+.box input[type=text] {
+    border-radius: 50px;
+    font-size: 15px;
+    height: 40px;
+    border: none;
+    outline: none;
+    padding-left: 15px;
+    /**/
+    width: calc(100% - 15px);
+    /*membuat lebarnya*/
+    margin-bottom: 15px;
+    background: rgba(46, 45, 45, 0.3);
+    color: white;
+}
+
+.box input[type=password] {
+    border-radius: 50px;
+    font-size: 15px;
+    height: 40px;
+    border: none;
+    outline: none;
+    padding-left: 15px;
+    /**/
+    width: calc(100% - 15px);
+    /*membuat lebarnya*/
+    margin-bottom: 15px;
+    background: rgba(46, 45, 45, 0.3);
+    color: white;
+}
+
+::placeholder {
+    color: white !important;
+}
+
+.box .link-area {
+    margin-top: 30px;
+}
+
+.box h2 {
+    text-transform: uppercase;
+    color: #fff;
+    font-size: 30px;
+    margin: 45px;
+}

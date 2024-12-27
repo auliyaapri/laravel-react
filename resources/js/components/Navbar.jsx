@@ -1,43 +1,78 @@
-import { usePage } from '@inertiajs/inertia-react';
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Link, usePage } from '@inertiajs/inertia-react';
 
 export default function Navbar() {
-  const [activeLink, setActiveLink] = useState('home')
-  const {url } = usePage()
-
+  const [activeLink, setActiveLink] = useState('');
+  const { url } = usePage();
 
   useEffect(() => {
-
     const currentPath = url.replace('/', '');
-    setActiveLink(currentPath);
+    setActiveLink(currentPath || 'home'); // Default ke 'home' jika path kosong
+  }, [url]);
 
-    
-
-  },[]);
-  
-  console.log('dsadasd', activeLink);
+  const isActive = (path) => (activeLink === path ? 'text-blue-700 font-bold' : 'text-white');
 
   return (
-    <div>
-      <nav className="bg-white shadow-md">
-        <div className="h-16 mx-9 flex justify-between items-center">
-          <div className="text-2xl font-bold text-blue-600">MyNavbar</div>
-          <div className="hidden md:flex space-x-4">
-            <a href="#" className={activeLink === 'home' ? 'text-blue-600 font-bold' : 'text-gray-700'}>Home</a>
-            <a href="#" className={activeLink === 'mahasiswa' ? 'text-blue-600 font-bold' : 'text-gray-700'}>Mahasiswa</a>            
-            <a href="#" className={activeLink === 'dosen' ? 'text-blue-600 font-bold' : 'text-gray-700'}>Dosen</a>            
-            <a href="#" className={activeLink === 'matakuliah' ? 'text-blue-600 font-bold' : 'text-gray-700'}>Matakuliah</a>            
-          </div>
-          <div className="md:hidden">
-            <button className="text-gray-700 focus:outline-none">
-              {/* Icon for mobile menu */}
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path>
-              </svg>
-            </button>
-          </div>
+    <nav className="bg-white border-gray-200 dark:bg-gray-900 dark:border-gray-700">
+      <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+        <a href="#" className="flex items-center space-x-3 rtl:space-x-reverse">
+          <img src="https://flowbite.com/docs/images/logo.svg" className="h-8" alt="Flowbite Logo" />
+          <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Flowbite</span>
+        </a>
+        <button
+          data-collapse-toggle="navbar-dropdown"
+          type="button"
+          className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+          aria-controls="navbar-dropdown"
+          aria-expanded="false"
+        >
+          <span className="sr-only">Open main menu</span>
+          <svg
+            className="w-5 h-5"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 17 14"
+          >
+            <path
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M1 1h15M1 7h15M1 13h15"
+            />
+          </svg>
+        </button>
+        <div className="hidden w-full md:block md:w-auto" id="navbar-dropdown">
+          <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+            <li>
+              <a href="/" className={`block py-2 px-3 rounded md:p-0 ${isActive('home')}`} aria-current="page">
+                Home
+              </a>
+            </li>
+            <li>
+              <a href="/mahasiswa" className={`block py-2 px-3 rounded md:p-0 ${isActive('mahasiswa')}`}>
+                Mahasiswa
+              </a>
+            </li>
+            <li>
+              <a href="/dosen" className={`block py-2 px-3 rounded md:p-0 ${isActive('dosen')}`}>
+                Dosen
+              </a>
+            </li>
+            <li>
+              <a href="/matakuliah" className={`block py-2 px-3 rounded md:p-0 ${isActive('matakuliah')}`}>
+                Matakuliah
+              </a>
+            </li>
+            
+            <Link href={route('register')} className={`bg-purple-700 block rounded  ${isActive('matakuliah')}`} >
+              Register
+            </Link>
+            
+          </ul>
         </div>
-      </nav>
-    </div>
+      </div>
+    </nav>
   );
 }

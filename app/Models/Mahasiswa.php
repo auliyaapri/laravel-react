@@ -16,12 +16,13 @@ class Mahasiswa extends Model
      */
     protected $table = 'mahasiswas';
 
-    protected $fillable = [
-        'nim',
-        'nama_lengkap',
-        'jenis_kelamin',
-        'tgl_lahir',
-        'alamat',
-    ];
+    protected $fillable = [ 'nim','nama_lengkap', 'jenis_kelamin', 'tgl_lahir','alamat', 'user_id'];
+    
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
 
 }

@@ -1,6 +1,8 @@
 // Index.jsx
 import { Inertia } from "@inertiajs/inertia";
-import { Link, usePage } from "@inertiajs/inertia-react";
+
+import { usePage, Link } from '@inertiajs/inertia-react';
+
 import React, { useEffect, useState } from "react";
 import Layouts from "../../Layouts/Layouts";
 
@@ -38,7 +40,7 @@ export default function Index({ mahasiswa, search: initialSearch }) {
     Inertia.get(`mahasiswa/edit/${id}`);
   };
 
-  const { flash } = usePage().props;
+  const flash  = usePage().props;
 
   useEffect(() => {
     const hideFlashMessage = () => {
