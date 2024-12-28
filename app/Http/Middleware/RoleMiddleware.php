@@ -3,25 +3,20 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
 class RoleMiddleware
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
-     * @param  mixed  ...$roles
-     * @return mixed
-     */
-    public function handle($request, Closure $next, ...$roles)
+    public function handle(Request $request, Closure $next, string $role)
     {
-        if (!Auth::check() || !in_array(Auth::user()->role, $roles)) {
-            redirect('/');
+        // Pastikan pengguna telah login dan memiliki peran yang sesuai
+        if (Auth::check() && Auth::user()->role !== $role) {
+            // Jika bukan mahasiswa, tampilkan pesan error
+            return redirect('/')->with('error', 'Anda bukan mahasiswa.');
         }
 
+        // Lanjutkan ke request berikutnya jika pengguna memiliki role yang sesuai
         return $next($request);
     }
 }

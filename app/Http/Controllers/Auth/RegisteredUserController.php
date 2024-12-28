@@ -66,10 +66,6 @@ class RegisteredUserController extends Controller
             'alamat' => $request->alamat ?? null, // Jika alamat tidak diisi, biarkan null
         ]);
 
-        // Bisa menambahkan event jika diperlukan
-        // event(new Registered($user));
-
-        // Login otomatis setelah registrasi
         Auth::login($user);
 
         // Redirect ke halaman dashboard atau halaman lain

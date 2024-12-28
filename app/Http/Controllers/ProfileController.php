@@ -20,8 +20,6 @@ class ProfileController extends Controller
     {
         // Memuat user beserta relasi mahasiswa
         $user = $request->user()->load('mahasiswa');  // Perhatikan penggunaan load() di sini
-
-
         
         return Inertia::render('Profile/Edit', [
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
@@ -34,18 +32,37 @@ class ProfileController extends Controller
     /**
      * Update the user's profile information.
      */
+
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $request->user()->fill($request->validated());
+        // Validasi data user dan mahasiswa
+        $validatedUserData = $request->validated();
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+        // Ambil user yang sedang login
+        $user = $request->user();
+
+        // Update data user
+        $user->fill($validatedUserData);
+
+        // Reset email_verified_at jika email diubah
+        if ($user->isDirty('email')) {
+            $user->email_verified_at = null;
         }
 
-        $request->user()->save();
+        // Simpan data user
+        $user->save();
 
-        return Redirect::route('profile.edit');
+        // Update data mahasiswa jika relasi ada
+        if ($user->mahasiswa) {
+            $validatedMahasiswaData = $request->only(['nim', 'nama_lengkap', 'jenis_kelamin', 'tgl_lahir', 'alamat']); // Sesuaikan field mahasiswa
+            $user->mahasiswa->fill($validatedMahasiswaData);
+            $user->mahasiswa->save();
+        }
+
+        // Redirect dengan pesan sukses
+        return Redirect::route('profile.edit')->with('success', 'Profil berhasil diperbarui.');
     }
+
 
     /**
      * Delete the user's account.
