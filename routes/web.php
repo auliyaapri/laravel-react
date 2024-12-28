@@ -22,9 +22,9 @@ Route::get('/', function () {
 // Route::get('/', [DashboardController::class, 'index']);
 
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth'])->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return Inertia::render('Dashboard');
+// })->middleware(['auth'])->name('dashboard');
 
 
 
@@ -39,6 +39,9 @@ Route::middleware('auth')->group(function () {
 
 
 Route::middleware(['auth', 'role:mahasiswa'])->group(function () {
+    Route::get('/dashboard', function () {
+    return Inertia::render('Dashboard');
+})->middleware(['auth'])->name('dashboard');
     Route::get('/matakuliah', [MatakuliahController::class, 'index'])->name('matakuliah.index');
     Route::get('/mahasiswa', [MahasiswaController::class, 'index'])->name('mahasiswa.index');
     Route::get('/mahasiswa/add', [MahasiswaController::class, 'formAdd'])->name('mahasiswa.add');
@@ -48,7 +51,11 @@ Route::middleware(['auth', 'role:mahasiswa'])->group(function () {
 });
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
-    Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
+    Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
+    Route::get('/mahasiswa', [AdminController::class, 'mahasiswa'])->name('mahasiswa.admin');
+    Route::get('/matakuliah', [AdminController::class, 'matakuliah'])->name('matakuliah.admin');
+
+
     
 });
 

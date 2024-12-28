@@ -12,6 +12,8 @@ export default function AuthenticatedLayout({ header, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
 
+    // console.log(user);
+        
     return (
         <div className="min-h-screen bg-gray-100">
             <nav className="border-b border-gray-100 bg-white">
@@ -31,13 +33,32 @@ export default function AuthenticatedLayout({ header, children }) {
                                 >
                                     Dashboard
                                 </NavLink>
-                                <NavLink
-                                    href={route('matakuliah.index')}
-                                    active={route().current('matakuliah.index')}
-                                >
-                                    Matakuliah
-                                </NavLink>
+
+                                {user.role === 'admin' ? (
+                                    <>
+                                        <NavLink
+                                            href={route('mahasiswa.admin')}
+                                            active={route().current('mahasiswa.admin')}
+                                        >
+                                            Mahasiswa
+                                        </NavLink>
+                                        <NavLink
+                                            href={route('matakuliah.admin')}
+                                            active={route().current('matakuliah.admin')}
+                                        >
+                                            Mata Kuliah (Admin)
+                                        </NavLink>
+                                    </>
+                                ) : (
+                                    <NavLink
+                                        href={route('matakuliah.index')}
+                                        active={route().current('matakuliah.index')}
+                                    >
+                                        Mata Kuliah
+                                    </NavLink>
+                                )}
                             </div>
+
                         </div>
 
                         <div className="hidden sm:ms-6 sm:flex sm:items-center">

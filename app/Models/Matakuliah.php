@@ -8,7 +8,7 @@ class Matakuliah extends Model
 {
     protected $table = 'mata_kuliah';
 
-    public function jadwalPerkuliahan() {
+    public function jadwal_perkuliahan() {
 
         return $this->hasMany(JadwalPerkuliahan::class, 'mata_kuliah_id', 'id');
     }

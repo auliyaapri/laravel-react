@@ -22,8 +22,6 @@ class MahasiswaController extends Controller
             return $query->where('nama_lengkap', 'like', "%{$search}%")
                 ->orWhere('nim', 'like', "%{$search}%");
         })->paginate(10); // Tetap gunakan pagination
-
-
         // Render halaman dengan data mahasiswa dan informasi pagination
         return Inertia::render('Mahasiswa/Index', [
             'mahasiswa' => $mahasiswa,

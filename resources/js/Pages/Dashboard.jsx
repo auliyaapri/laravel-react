@@ -1,12 +1,16 @@
+import React from 'react';
+import { usePage } from '@inertiajs/inertia-react';
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/inertia-react";
 
-export default function Dashboard({auth}) {
+
+export default function Dashboard() {
+    const { auth, mahasiswa } = usePage().props; // Mengambil mahasiswa dan auth dari props
+    console.log(mahasiswa); // Cek apakah data mahasiswa diterima dengan benar
+
     let roleName = auth.user.role;
-    
 
     return (
-        
         <AuthenticatedLayout
             header={
                 <h2 className="text-xl font-semibold leading-tight text-gray-800">
@@ -21,7 +25,9 @@ export default function Dashboard({auth}) {
                     <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900">
                             {roleName === "admin" && (
-                                <p>Welcome, Admin! You have full access to the system.</p>
+                                <div>
+                                    <p>Welcome, Admin! You have full access to the system.</p>
+                                </div>
                             )}
                             {roleName === "mahasiswa" && (
                                 <p>Welcome, Mahasiswa! You can view your schedule and information here.</p>
@@ -30,6 +36,7 @@ export default function Dashboard({auth}) {
                                 <p>Welcome! Your role is not recognized.</p>
                             )}
                         </div>
+                        
                     </div>
                 </div>
             </div>
