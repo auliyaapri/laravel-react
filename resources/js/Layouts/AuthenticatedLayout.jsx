@@ -7,12 +7,13 @@ import { useState } from 'react';
 
 
 export default function AuthenticatedLayout({ header, children }) {
-    const user = usePage().props.auth.user;
-
+    const user = usePage().props.auth.user;    
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
-        useState(false);
+        useState(false);       
+    const isDashboard = route().current
 
-    // console.log(user);
+
+    console.log(isDashboard);
         
     return (
         <div className="min-h-screen bg-gray-100">
@@ -44,9 +45,19 @@ export default function AuthenticatedLayout({ header, children }) {
                                         </NavLink>
                                         <NavLink
                                             href={route('matakuliah.admin')}
-                                            active={route().current('matakuliah.admin')}
+                                            active={
+                                                route().current('matakuliah.admin') ||
+                                                route().current('matakuliah.edit.admin')                                                
+                                            }
                                         >
                                             Mata Kuliah (Admin)
+                                        </NavLink>
+
+                                        <NavLink
+                                            href={route('kehadiran.admin')}
+                                            active={route().current('kehadiran.admin')}
+                                        >
+                                            Kehadiran
                                         </NavLink>
                                     </>
                                 ) : (

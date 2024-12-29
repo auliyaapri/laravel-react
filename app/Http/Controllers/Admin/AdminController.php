@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
+use App\Models\Kehadiran;
 use App\Models\Mahasiswa;
 use App\Models\Matakuliah;
 use GuzzleHttp\Psr7\Response;
@@ -23,6 +24,7 @@ class AdminController extends Controller
         ]);
     }
 
+
     public function mahasiswa(Request $request)
     {
         $search = $request->input('search');
@@ -39,12 +41,25 @@ class AdminController extends Controller
 
     public function matakuliah()
     {
-        // Mengambil data Matakuliah beserta jadwal perkuliahan terkait
-        $matakuliah_jadwalPerkuliahan = Matakuliah::with('jadwal_perkuliahan')->get();
+        // Mengambil data Matakuliah beserta jadwal perkuliahan terkait dan mengurutkan berdasarkan 'nama_mata_kuliah' secara ascending
+        $matakuliah_jadwalPerkuliahan = Matakuliah::with('jadwal_perkuliahan')
+        ->orderBy('nama_mata_kuliah', 'asc') // Mengurutkan berdasarkan kolom 'nama_mata_kuliah' secara ascending
+        ->get();
 
         // Pastikan data sudah diambil sebelum dikirim ke Inertia
         return Inertia::render('Admin/Matakuliah', [
             'matakuliah_jadwalPerkuliahan' => $matakuliah_jadwalPerkuliahan,
+        ]);
+    }
+
+
+    public function kehadiran()
+    {
+        $kehadiran = Kehadiran::with('mahasiswa', 'matakuliah.jadwal_perkuliahan')->get();
+        // dd($kehadiran);
+        // Cek apakah data mahasiswa ada
+        return Inertia::render('Admin/Kehadiran', [
+            'kehadiran' => $kehadiran,
         ]);
     }
 

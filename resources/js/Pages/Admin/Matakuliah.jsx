@@ -1,10 +1,16 @@
 import React from 'react'
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from '@inertiajs/inertia-react';
+import { Inertia } from '@inertiajs/inertia';
 
 export default function Matakuliah({ matakuliah_jadwalPerkuliahan }) {
   // Data mata kuliah yang diterima dari props
   const dataMatakuliah = matakuliah_jadwalPerkuliahan;
+
+  // ======== AKSI ========
+  const handleEdit = (id) => {
+    Inertia.get(route('matakuliah.edit.admin', { id: id }));
+  }
 
   return (
     <div>
@@ -37,6 +43,7 @@ export default function Matakuliah({ matakuliah_jadwalPerkuliahan }) {
                         <th scope="col" className="px-6 py-3">Kode Mata Kuliah</th>
                         <th scope="col" className="px-6 py-3">Deskripsi</th>
                         <th scope="col" className="px-6 py-3">Jadwal Perkuliahan</th>
+                        <th scope="col" className="px-6 py-3">Aksi</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -65,6 +72,14 @@ export default function Matakuliah({ matakuliah_jadwalPerkuliahan }) {
                             ) : (
                               <p>Tidak ada jadwal</p>
                             )}
+                          </td>
+                          <td className="px-6 py-4">
+                            <button
+                              onClick={() => handleEdit(item.id)}
+                              className="text-white rounded-md bg-slate-400 px-3 py-2"
+                            >
+                              Edit  {item.id}
+                            </button>
                           </td>
                         </tr>
                       ))}

@@ -24,5 +24,11 @@ class Mahasiswa extends Model
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
+    public function kehadiran()
+    {
+        return $this->hasMany(Kehadiran::class, 'mahasiswa_id', 'id');
+    }
+
+
 
 }
