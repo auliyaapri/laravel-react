@@ -23,7 +23,8 @@ export default function AuthenticatedLayout({ header, children }) {
                         <div className="flex">
                             <div className="flex shrink-0 items-center">
                                 <Link href="/">
-                                    <ApplicationLogo className="block h-9 w-auto fill-current text-gray-800" />
+                                    {/* <ApplicationLogo className="block h-9 w-auto fill-current text-gray-800" /> */}
+                                    <h1 className='font-bold text-purple-700 text-2xl underline'>User Logo</h1>
                                 </Link>
                             </div>
 
