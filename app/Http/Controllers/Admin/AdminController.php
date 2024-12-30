@@ -28,20 +28,16 @@ class AdminController extends Controller
     public function mahasiswa(Request $request)
     {
         $search = $request->input('search');
-        $mahasiswa = Mahasiswa::with('user')  // Menambahkan relasi User
-        ->when($search, function ($query, $search) {
+        $mahasiswa = Mahasiswa::when($search, function ($query, $search) {
             return $query->where('nama_lengkap', 'like', "%{$search}%")
-            ->orWhere('nim', 'like', "%{$search}%");
-        })
-            ->paginate(10); // Tetap gunakan pagination
-
+                ->orWhere('nim', 'like', "%{$search}%");
+        })->paginate(10); // Tetap gunakan pagination
         // Render halaman dengan data mahasiswa dan informasi pagination
         return Inertia::render('Admin/Mahasiswa', [
             'mahasiswa' => $mahasiswa,
             'search' => $search,
         ]);
     }
-
 
     public function matakuliah()
     {
@@ -60,7 +56,7 @@ class AdminController extends Controller
     public function kehadiran()
     {
         $kehadiran = Kehadiran::with(['mahasiswa', 'matakuliah.jadwal_perkuliahan'])
-            ->orderBy(Mahasiswa::select('nama_lengkap')->whereColumn('mahasiswas.id', 'kehadiran.mahasiswa_id'), 'asc') // Order berdasarkan nama_lengkap mahasiswa
+            ->orderBy(Mahasiswa::select('nama_lengkap')->whereColumn('mahasiswa.id', 'kehadiran.mahasiswa_id'), 'asc') // Order berdasarkan nama_lengkap mahasiswa
             ->get();
 
         // Cek apakah data mahasiswa ada

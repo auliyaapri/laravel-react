@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\JadwalPerkuliahan;
 use App\Models\Mahasiswa;
 use App\Models\Matakuliah;
 use Illuminate\Http\Request;
@@ -9,31 +10,20 @@ use Inertia\Inertia;
 
 class MatakuliahController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    // public function index()
-    // {
-    //     $matakuliah = Matakuliah::with('jadwalPerkuliahan')->get();
-    //     return Inertia::render('Matakuliah/Index',[
-    //         'matakuliah' => $matakuliah
-    //     ]);
-    // }
 
     public function index()
     {
-        // Ambil semua mata kuliah beserta jadwal perkuliahan
-        $matakuliah = Matakuliah::with('jadwalPerkuliahan')->get();
 
-        // Kelompokkan jadwal perkuliahan berdasarkan hari
-        $matakuliah->each(function ($item) {
-            $item->jadwalPerkuliahan = $item->jadwalPerkuliahan->groupBy('hari');
-        });
+        //  ===========
+        $matakuliah_jadwalPerkuliahan = Matakuliah::with('jadwal_perkuliahan')
+            ->orderBy(JadwalPerkuliahan::select('hari')->whereColumn('jadwal_perkuliahan.mata_kuliah_id', 'mata_kuliah.id'), 'desc') // Order berdasarkan nama_lengkap mahasiswa
+        ->get();
 
-        // Kembalikan data ke Inertia view
-        return Inertia::render('Matakuliah/Index', [
-            'matakuliah' => $matakuliah
+        // Pastikan data sudah diambil sebelum dikirim ke Inertia
+        return Inertia::render('Mahasiswa/Matakuliah/Index', [
+            'matakuliah_jadwalPerkuliahan' => $matakuliah_jadwalPerkuliahan,
         ]);
+        //  ===========
     }
 
     /**

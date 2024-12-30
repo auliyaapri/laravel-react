@@ -31,42 +31,55 @@ Route::get('/', function () {
 
 
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
 
 
 
+
+// Route::middleware(['auth', 'role:mahasiswa'])->group(function () {
+//     Route::get('/dashboard', function () {
+//     return Inertia::render('Dashboard');
+// })->name('dashboard');
+
+//     Route::get('/matakuliah', [MatakuliahController::class, 'index'])->name('matakuliah.index');
+//     Route::get('/mahasiswa', [MahasiswaController::class, 'index'])->name('mahasiswa.index');
+//     Route::get('/mahasiswa/add', [MahasiswaController::class, 'formAdd'])->name('mahasiswa.add');
+//     Route::get('/mahasiswa/edit/{id}', [MahasiswaController::class, 'edit'])->name('mahasiswa.edit');
+//     Route::delete('/mahasiswa/delete/{id}', [MahasiswaController::class, 'destroy'])->name('mahasiswa.destroy');
+//     Route::put('/mahasiswa/update/{id}', [MahasiswaController::class, 'update'])->name('mahasiswa.update');
+// });
+
+// =================== ADMIN ==================
+    Route::middleware(['auth', 'role:admin'])->group(function () {
+        Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
+        Route::get('/matakuliah', [AdminController::class, 'matakuliah'])->name('matakuliah.admin');
+        Route::get('/mahasiswa', [AdminController::class, 'mahasiswa'])->name('mahasiswa.admin');
+        Route::get('/matakuliah/edit/{id}', [AdminMatakuliahController::class, 'edit'])->name('matakuliah.edit.admin');
+        Route::put('/matakuliah/{id}', [AdminMatakuliahController::class, 'update'])->name('matakuliah.update.admin');
+
+        Route::get('/kehadiran', [AdminController::class, 'kehadiran'])->name('kehadiran.admin');
+        Route::get('/kehadiran/edit/{id}', [AdminKehadiranController::class, 'edit'])->name('kehadiran.edit.admin');
+        Route::put('/kehadiran/{id}', [AdminKehadiranController::class, 'update'])->name('kehadiran.update.admin');
+    });
+// =================== ADMIN ==================
 
 Route::middleware(['auth', 'role:mahasiswa'])->group(function () {
-    Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth'])->name('dashboard');
-    Route::get('/matakuliah', [MatakuliahController::class, 'index'])->name('matakuliah.index');
-    Route::get('/mahasiswa', [MahasiswaController::class, 'index'])->name('mahasiswa.index');
-    Route::get('/mahasiswa/add', [MahasiswaController::class, 'formAdd'])->name('mahasiswa.add');
-    Route::get('/mahasiswa/edit/{id}', [MahasiswaController::class, 'edit'])->name('mahasiswa.edit');
-    Route::delete('/mahasiswa/delete/{id}', [MahasiswaController::class, 'destroy'])->name('mahasiswa.destroy');
-    Route::put('/mahasiswa/update/{id}', [MahasiswaController::class, 'update'])->name('mahasiswa.update');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+        Route::get('/matakuliah', [MatakuliahController::class, 'index'])->name('matakuliah.index');
+//     Route::get('/mahasiswa', [MahasiswaController::class, 'index'])->name('mahasiswa.index');
+//     Route::get('/mahasiswa/add', [MahasiswaController::class, 'formAdd'])->name('mahasiswa.add');
+//     Route::get('/mahasiswa/edit/{id}', [MahasiswaController::class, 'edit'])->name('mahasiswa.edit');
+//     Route::delete('/mahasiswa/delete/{id}', [MahasiswaController::class, 'destroy'])->name('mahasiswa.destroy');
+//     Route::put('/mahasiswa/update/{id}', [MahasiswaController::class, 'update'])->name('mahasiswa.update');
 });
 
-Route::middleware(['auth', 'role:admin'])->group(function () {
-    Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
-    Route::get('/matakuliah', [AdminController::class, 'matakuliah'])->name('matakuliah.admin');
-    
-    
-    Route::get('/mahasiswa', [AdminController::class, 'mahasiswa'])->name('mahasiswa.admin');
-    Route::get('/matakuliah/edit/{id}', [AdminMatakuliahController::class, 'edit'])->name('matakuliah.edit.admin');
-    Route::put('/matakuliah/{id}', [AdminMatakuliahController::class, 'update'])->name('matakuliah.update.admin');
 
-    Route::get('/kehadiran', [AdminController::class, 'kehadiran'])->name('kehadiran.admin');
-    Route::get('/kehadiran/edit/{id}', [AdminKehadiranController::class, 'edit'])->name('kehadiran.edit.admin');
-    Route::put('/kehadiran/{id}', [AdminKehadiranController::class, 'update'])->name('kehadiran.update.admin');
+
+
+// =================== MAHASISWA ==================
+// Route::middleware(['auth', 'role:mahasiswa'])->group(function () {
+
     
-    
-});
+// });
 
 
 

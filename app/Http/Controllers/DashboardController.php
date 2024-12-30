@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Mahasiswa;
+use App\Models\Matakuliah;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -9,12 +11,10 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        return Inertia::render('Landing/Index',[
-            'title' => 'Home'
-        ]);
+        return Inertia::render('Mahasiswa/MahasiswaDashboard');
     }
 
-    /**
+/**
      * Show the form for creating a new resource.
      */
     public function create()
