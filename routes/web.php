@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\AdminKehadiranController;
 use App\Http\Controllers\Admin\AdminMatakuliahController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MahasiswaController;
@@ -54,13 +55,16 @@ Route::middleware(['auth', 'role:mahasiswa'])->group(function () {
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
     Route::get('/matakuliah', [AdminController::class, 'matakuliah'])->name('matakuliah.admin');
-    Route::get('/kehadiran', [AdminController::class, 'kehadiran'])->name('kehadiran.admin');
+    
     
     Route::get('/mahasiswa', [AdminController::class, 'mahasiswa'])->name('mahasiswa.admin');
     Route::get('/matakuliah/edit/{id}', [AdminMatakuliahController::class, 'edit'])->name('matakuliah.edit.admin');
     Route::put('/matakuliah/{id}', [AdminMatakuliahController::class, 'update'])->name('matakuliah.update.admin');
 
-
+    Route::get('/kehadiran', [AdminController::class, 'kehadiran'])->name('kehadiran.admin');
+    Route::get('/kehadiran/edit/{id}', [AdminKehadiranController::class, 'edit'])->name('kehadiran.edit.admin');
+    Route::put('/kehadiran/{id}', [AdminKehadiranController::class, 'update'])->name('kehadiran.update.admin');
+    
     
 });
 

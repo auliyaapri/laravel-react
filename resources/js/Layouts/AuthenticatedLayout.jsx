@@ -55,7 +55,10 @@ export default function AuthenticatedLayout({ header, children }) {
 
                                         <NavLink
                                             href={route('kehadiran.admin')}
-                                            active={route().current('kehadiran.admin')}
+                                            active={
+                                                route().current('kehadiran.admin')||
+                                                route().current('kehadiran.edit.admin')
+                                            }
                                         >
                                             Kehadiran
                                         </NavLink>

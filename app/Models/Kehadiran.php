@@ -8,7 +8,7 @@ class Kehadiran extends Model
 {
     protected $table = 'kehadiran';
 
-    // protected $fillable = ['nim', 'nama_lengkap', 'jenis_kelamin', 'tgl_lahir', 'alamat', 'user_id'];
+    protected $fillable = ['status_kehadiran', 'jadwal_id', 'mahasiswa_id'];
     public function mahasiswa()
     {
         // mahasiswa_id 

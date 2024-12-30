@@ -1,10 +1,39 @@
 import React from 'react';
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head } from '@inertiajs/inertia-react';
+import { Head, usePage } from '@inertiajs/inertia-react';
 
+import { format } from 'date-fns';
+import { id } from 'date-fns/locale'; // Locale untuk bahasa Indonesia
+import { Inertia } from '@inertiajs/inertia';
 export default function Kehadiran({ kehadiran }) {
   // Log data kehadiran untuk melihat data yang diterima
   console.log(kehadiran);
+
+  const formatTanggal = (tanggal) => {
+    return format(new Date(tanggal), "EEEE, dd MMMM yyyy", { locale: id });
+  };
+  const changeColor = (statusColor) => {
+    if (statusColor === "Tidak Hadir") {
+      return <span className="text-red-500">{statusColor}</span>;
+    } else if (statusColor === "Hadir") {
+      return <span className="text-green-500">{statusColor}</span>;
+    } else if (statusColor === "Izin") {
+      return <span className="text-yellow-500">{statusColor}</span>;
+    } else if (statusColor === "Terlambat") {
+      return <span className="text-orange-500">{statusColor}</span>;
+    } else {
+      return <span>{statusColor}</span>;
+    }
+  };
+
+  const handleEdit = (id) => {
+    Inertia.get(route('kehadiran.edit.admin', { id: id })); // Pastikan menggunakan objek Inertia
+
+  };
+
+
+  // console.log(changeColor("Ini adalah teks merah").props.children);
+
 
   return (
     <div>
@@ -38,6 +67,7 @@ export default function Kehadiran({ kehadiran }) {
                         <th scope="col" className="px-6 py-3">Hari</th>
                         <th scope="col" className="px-6 py-3">Status Kehadiran</th>
                         <th scope="col" className="px-6 py-3">Tanggal</th>
+                        <th scope="col" className="px-6 py-3">Aksi</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -62,8 +92,19 @@ export default function Kehadiran({ kehadiran }) {
                               ? item.matakuliah.jadwal_perkuliahan[0].hari
                               : 'Data tidak tersedia'}
                           </td>
-                          <td className="px-6 py-4">{item.mahasiswa ? item.status_kehadiran : 'Data tidak tersedia'}</td>
-                          <td className="px-6 py-4">{item.mahasiswa ? item.updated_at: 'Data tidak tersedia'}</td>
+                          <td className="px-6 py-4">{item.mahasiswa ? changeColor(item.status_kehadiran) : 'Data tidak tersedia'}</td>
+                          <td className="px-6 py-4">
+                            {item.updated_at ? formatTanggal(item.created_at) : 'Data tidak tersedia'}
+                          </td>
+                          <td className="px-6 py-4">
+                            <button
+                              onClick={() => handleEdit(item.id)}
+                              className="text-white rounded-md bg-slate-400 px-3 py-2"
+                            >
+                              Edit  {item.id}
+                            </button>
+                          </td>
+
                         </tr>
                       ))}
                     </tbody>
