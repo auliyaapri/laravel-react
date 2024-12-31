@@ -65,6 +65,7 @@ Route::get('/', function () {
 Route::middleware(['auth', 'role:mahasiswa'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
         Route::get('/matakuliah', [MatakuliahController::class, 'index'])->name('matakuliah.index');
+        Route::get('/matakuliah/detail/{id}', [MatakuliahController::class, 'show'])->name('matakuliah.show');
 //     Route::get('/mahasiswa', [MahasiswaController::class, 'index'])->name('mahasiswa.index');
 //     Route::get('/mahasiswa/add', [MahasiswaController::class, 'formAdd'])->name('mahasiswa.add');
 //     Route::get('/mahasiswa/edit/{id}', [MahasiswaController::class, 'edit'])->name('mahasiswa.edit');

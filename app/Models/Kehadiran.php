@@ -21,5 +21,10 @@ class Kehadiran extends Model
         return $this->belongsTo(Matakuliah::class, 'jadwal_id', 'id');
     }
 
+    public function jadwal()
+    {
+        return $this->belongsTo(JadwalPerkuliahan::class, 'jadwal_id');
+    }
+
 }
 

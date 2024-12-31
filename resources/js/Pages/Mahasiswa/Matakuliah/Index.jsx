@@ -1,14 +1,15 @@
 import React from 'react';
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from '@inertiajs/inertia-react';
+import { Inertia } from '@inertiajs/inertia';
 
 export default function Index({ matakuliah_jadwalPerkuliahan }) {
   // Data mata kuliah yang diterima dari props
   const dataMatakuliah = matakuliah_jadwalPerkuliahan;
 
   // ======== AKSI ========
-  const handleEdit = (id) => {
-    Inertia.get(route('matakuliah.edit.admin', { id: id }));
+  const handleDetail = (id) => {
+    Inertia.get(route('matakuliah.show', { id: id }));
   }
 
   return (
@@ -50,11 +51,14 @@ export default function Index({ matakuliah_jadwalPerkuliahan }) {
                           <p className="text-gray-500">Tidak ada jadwal</p>
                         )}
                       </div>
-                      <ul className="mt-4 list-disc list-inside text-gray-600">
+                      <ul className="mt-4 list-disc list-inside text-gray-600 h-48">
                         <li className="text-lg font-semibold text-gray-800">{item.nama_mata_kuliah}</li>
                         <li>Kode Mata Kuliah: {item.kode_mata_kuliah}</li>
                         <li>Deskripsi: {item.deskripsi}</li>
                       </ul>
+                      <button onClick={() => handleDetail(item.id)} class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                        Detail 
+                      </button>
                     </div>
 
                   ))}
