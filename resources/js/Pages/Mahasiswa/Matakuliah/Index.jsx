@@ -12,6 +12,16 @@ export default function Index({ matakuliah_jadwalPerkuliahan }) {
     Inertia.get(route('matakuliah.show', { id: id }));
   }
 
+// ===== Hari =====
+    let today = new Date(); // Tanggal hari ini
+    let date = today.toISOString().slice(0, 10); // Format YYYY-MM-DD
+    let days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+
+    let dayName = days[today.getDay()]; // Nama hari berdasarkan indeks getDay()
+    console.log(date); // Menampilkan tanggal dalam format YYYY-MM-DD
+    console.log(dayName); // Menampilkan nama hari (contoh: "Tuesday")
+// ===== Hari =====
+
   return (
     <div>
       <AuthenticatedLayout
@@ -41,16 +51,26 @@ export default function Index({ matakuliah_jadwalPerkuliahan }) {
                       <div className="mt-4">
                         {/* Menampilkan jadwal perkuliahan jika ada */}
                         {item.jadwal_perkuliahan && item.jadwal_perkuliahan.length > 0 ? (
-                          item.jadwal_perkuliahan.map((jadwal, idx) => (
-                            <div key={idx} className="bg-gray-50 p-3 rounded-lg shadow-sm mb-3">
-                              <p className="text-center text-lg font-semibold text-gray-700">{jadwal.hari}</p>
-                              <p className="text-gray-600">Jam: {jadwal.jam_mulai} - {jadwal.jam_selesai}</p>
-                            </div>
-                          ))
+                          item.jadwal_perkuliahan.map((jadwal, idx) => {
+                            let today = new Date(); // Tanggal hari ini
+                            let days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+                            let dayName = days[today.getDay()]; // Mendapatkan nama hari dalam bahasa Indonesia
+
+                            // Tentukan kelas latar belakang berdasarkan kondisi
+                            let bgClass = dayName === jadwal.hari ? "bg-green-500" : "bg-gray-50";
+
+                            return (
+                              <div key={idx} className={`${bgClass} p-3 rounded-lg shadow-sm mb-3`}>
+                                <p className="text-center text-lg font-semibold text-gray-700">{jadwal.hari}</p>
+                                <p className="text-gray-600">Jam: {jadwal.jam_mulai} - {jadwal.jam_selesai}</p>
+                              </div>
+                            );
+                          })
                         ) : (
                           <p className="text-gray-500">Tidak ada jadwal</p>
                         )}
                       </div>
+
                       <ul className="mt-4 list-disc list-inside text-gray-600 h-48">
                         <li className="text-lg font-semibold text-gray-800">{item.nama_mata_kuliah}</li>
                         <li>Kode Mata Kuliah: {item.kode_mata_kuliah}</li>

@@ -55,7 +55,6 @@ export default function Mahasiswa({ mahasiswa }) {
                         <th scope="col" className="px-6 py-3">Nama Lengkap</th>
                         <th scope="col" className="px-6 py-3">NIM</th>
                         <th scope="col" className="px-6 py-3">Jenis Kelamin</th>
-                        <th scope="col" className="px-6 py-3">Email</th>
                         <th scope="col" className="px-6 py-3">Tanggal Lahir</th>
                       </tr>
                     </thead>
@@ -74,8 +73,7 @@ export default function Mahasiswa({ mahasiswa }) {
                           </th>
                           <td className="px-6 py-4">{item.nama_lengkap}</td>
                           <td className="px-6 py-4">{item.nim}</td>
-                          <td className="px-6 py-4">{changeName(item.jenis_kelamin)}</td>
-                          <td className="px-6 py-4">{item.user.email}</td>
+                          <td className="px-6 py-4">{changeName(item.jenis_kelamin)}</td>                          
                           <td className="px-6 py-4">{item.tgl_lahir}</td>
                         </tr>
                       ))}

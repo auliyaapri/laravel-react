@@ -1,12 +1,49 @@
 import React, { useState } from 'react';
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from '@inertiajs/inertia-react';
+import { Inertia } from '@inertiajs/inertia';
 
 export default function DetailKehadiran({ kehadirans }) {
   const [hari, setHarii] = useState(kehadirans.matakuliah.jadwal_perkuliahan[0].hari);
   
   console.log(kehadirans);
   console.log(`hari`, hari);
+  console.log(kehadirans.mahasiswa_kehadiran.id);
+
+  // ===== Hari =====
+  let today = new Date(); // Tanggal hari ini
+  let date = today.toISOString().slice(0, 10); // Format YYYY-MM-DD
+  let days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+
+  let dayName = days[today.getDay()]; // Nama hari berdasarkan indeks getDay()
+  console.log(date); // Menampilkan tanggal dalam format YYYY-MM-DD
+  console.log(dayName); // Menampilkan nama hari (contoh: "Tuesday")
+  // ===== Hari =====
+
+  const buttonHadir = (dayName, hari) => {
+    if (dayName === hari) {
+      return (
+        <button
+          onClick={handleSubmit}
+          className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full mb-4"
+        >
+          Tidak Hadir
+        </button>
+      );
+    }
+  };
+
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    // Kirim data yang diperbarui ke server
+    Inertia.post(route('kehadiran.create'), { // Pastikan route ini sesuai dengan yang ada di web.php
+      status_kehadiran: "Hadir",
+      mahasiswa_id: kehadirans.mahasiswa_kehadiran.id,
+      jadwal_id: kehadirans.matakuliah.id,
+    });
+  };
 
   return (
     <div>
@@ -48,6 +85,10 @@ export default function DetailKehadiran({ kehadirans }) {
                   <h2 className="text-xl font-semibold text-gray-800 mb-4">
                     Riwayat Kehadiran Mahasiswa
                   </h2>
+
+
+                  {buttonHadir(dayName, hari)}
+
                   <div className="overflow-x-auto">
                     <table className="min-w-full border-collapse border border-gray-200">
                       <thead>

@@ -6,10 +6,12 @@ import { format } from 'date-fns';
 import { id } from 'date-fns/locale'; // Locale untuk bahasa Indonesia
 import { Inertia } from '@inertiajs/inertia';
 export default function Kehadiran({ kehadirans }) {
-  const dataKehadiran = kehadirans.kehadirans
-  console.log(dataKehadiran);
+  // Log data kehadirans untuk melihat data yang diterima
+  console.log(kehadirans);
 
-
+  const formatTanggal = (tanggal) => {
+    return format(new Date(tanggal), "EEEE, dd MMMM yyyy", { locale: id });
+  };
   const changeColor = (statusColor) => {
     if (statusColor === "Tidak Hadir") {
       return <span className="text-red-500">{statusColor}</span>;
@@ -23,9 +25,13 @@ export default function Kehadiran({ kehadirans }) {
       return <span>{statusColor}</span>;
     }
   };
+
   const handleEdit = (id) => {
     Inertia.get(route('kehadiran.edit.admin', { id: id })); // Pastikan menggunakan objek Inertia
   };
+
+
+  console.log(changeColor("Ini adalah teks merah").props.children);
 
 
   return (
@@ -57,27 +63,50 @@ export default function Kehadiran({ kehadirans }) {
                         <th scope="col" className="px-6 py-3">Nama Lengkap</th>
                         <th scope="col" className="px-6 py-3">NIM</th>
                         <th scope="col" className="px-6 py-3">Matakuliah</th>
+                        <th scope="col" className="px-6 py-3">Hari</th>
                         <th scope="col" className="px-6 py-3">Status Kehadiran</th>
+                        <th scope="col" className="px-6 py-3">Tanggal</th>
                         <th scope="col" className="px-6 py-3">Aksi</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {dataKehadiran.map((item, index) => (
-                        <tr key={index} className={`${index % 2 === 0 ? "bg-white" : "bg-gray-50"} border-b`} >
-                          <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap" >
+                      {kehadirans.map((item, index) => (
+                        <tr
+                          key={index}
+                          className={`${index % 2 === 0 ? "bg-white" : "bg-gray-50"
+                            } border-b`}
+                        >
+                          <th
+                            scope="row"
+                            className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
+                          >
                             {index + 1}
                           </th>
+                          {/* Pastikan properti mahasiswa ada dalam setiap item kehadiran */}
                           <td className="px-6 py-4">{item.mahasiswa ? item.mahasiswa.nama_lengkap : 'Data tidak tersedia'}</td>
                           <td className="px-6 py-4">{item.mahasiswa ? item.mahasiswa.nim : 'Data tidak tersedia'}</td>
-                          <td className="px-6 py-4">{item.jadwal.matakuliah ? item.jadwal.matakuliah.nama_mata_kuliah : 'Data tidak tersedia'}</td>
+                          <td className="px-6 py-4">{item.mahasiswa ? item.matakuliah.nama_mata_kuliah : 'Data tidak tersedia'}</td>
+                          <td className="px-6 py-4">
+                            {item.matakuliah && item.matakuliah.jadwal_perkuliahan && item.matakuliah.jadwal_perkuliahan.length > 0
+                              ? item.matakuliah.jadwal_perkuliahan[0].hari
+                              : 'Data tidak tersedia'}
+                          </td>
                           <td className="px-6 py-4">{item.mahasiswa ? changeColor(item.status_kehadiran) : 'Data tidak tersedia'}</td>
                           <td className="px-6 py-4">
-                            <button onClick={() => handleEdit(item.id)} className="text-white rounded-md bg-slate-400 px-3 py-2"> Edit{item.id}</button>
+                            {item.updated_at ? formatTanggal(item.created_at) : 'Data tidak tersedia'}
                           </td>
+                          <td className="px-6 py-4">
+                            <button
+                              onClick={() => handleEdit(item.id)}
+                              className="text-white rounded-md bg-slate-400 px-3 py-2"
+                            >
+                              Edit  {item.id}
+                            </button>
+                          </td>
+
                         </tr>
                       ))}
                     </tbody>
-
                   </table>
                 </div>
               </div>
@@ -88,4 +117,3 @@ export default function Kehadiran({ kehadirans }) {
     </div>
   );
 }
-

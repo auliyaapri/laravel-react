@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\JadwalPerkuliahan;
+use App\Models\Kehadiran;
 use App\Models\Mahasiswa;
 use App\Models\Matakuliah;
 use Illuminate\Http\Request;
@@ -29,6 +30,34 @@ class MatakuliahController extends Controller
     public function store(Request $request)
     {
     }
+
+
+
+
+    public function storeKehadiran(Request $request)
+    {
+        // Validasi data jika perlu
+        $request->validate([
+            'status_kehadiran' => 'required|string',
+            'mahasiswa_id' => 'required|integer',
+            'jadwal_id' => 'required|integer',
+        ]);
+
+        // Menyimpan data kehadiran
+        Kehadiran::create([
+            'mahasiswa_id' => $request->mahasiswa_id,
+            'jadwal_id' => $request->jadwal_id,
+            'status_kehadiran' => $request->status_kehadiran,
+        ]);
+
+        // Memberikan feedback ke user (redirect atau merender view)
+        return redirect()->route('kehadiran.index') // Ganti dengan route yang sesuai
+        ->with('success', 'Kehadiran berhasil disimpan.');
+    }
+
+
+
+
     
     public function show(string $id)
     {
@@ -54,32 +83,6 @@ class MatakuliahController extends Controller
         ]);
     }
 
-    // public function show(string $id)
-    // {
-    //     // Mendapatkan user_id dari pengguna yang sedang login
-    //     $userCurrent = Auth::user()->id;
-
-    //     // dd($userCurrent);
-    //     // Mengambil data mahasiswa dengan filter user_id dan id mahasiswa
-    //     $dataMahasiswaKehadiran = Mahasiswa::with([
-    //         'kehadiran.jadwal.mataKuliah' // Pastikan relasi ini terdefinisi di model
-    //     ])
-    //     ->where('id', $id) // Filter berdasarkan ID mahasiswa
-    //     ->where('user_id', $userCurrent) // Filter berdasarkan user_id
-    //     ->first();
-
-    //     // dd(json_encode($dataMahasiswaKehadiran));
-
-    //     // Pastikan data mahasiswa ditemukan
-    //     if (!$dataMahasiswaKehadiran) {
-    //         abort(404, 'Data Mahasiswa tidak ditemukan atau tidak sesuai dengan pengguna.');
-    //     }
-
-    //     // Mengirimkan data ke view
-    //     return Inertia::render('Mahasiswa/Matakuliah/DetailKehadiran', [
-    //         'kehadirans' => $dataMahasiswaKehadiran,
-    //     ]);
-    // }
 
 
 

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Mahasiswa;
+use Illuminate\Support\Facades\Auth;
+
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -35,9 +37,11 @@ class MahasiswaController extends Controller
     {
         return Inertia::render('Mahasiswa/FormTabah');
     }
-    public function create()
+    public function create(Request $request)
     {
-        //
+        // $userCurrent = Auth::user()->id;
+        dd($request);
+
     }
 
     /**

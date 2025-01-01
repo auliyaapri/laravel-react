@@ -10,7 +10,7 @@ export default function DetailKehadiran({ kehadirans }) {
       <AuthenticatedLayout
         header={
           <h2 className="text-2xl font-bold leading-tight text-gray-800">
-            Detail Kehadiran Mahasiswa
+          Detail Kehadiran Mahasiswafda
           </h2>
         }
       >

@@ -8,15 +8,13 @@ use Illuminate\Http\Request;
 
 class RoleMiddleware
 {
-    public function handle(Request $request, Closure $next, string $role)
+    public function handle(Request $request, Closure $next, string ...$roles)
     {
-        // Pastikan pengguna telah login dan memiliki peran yang sesuai
-        if (Auth::check() && Auth::user()->role !== $role) {
-            // Jika bukan mahasiswa, tampilkan pesan error
-            return redirect('/')->with('error', 'Anda bukan mahasiswa.');
+        // Periksa role user yang sedang login
+        if (Auth::check() && !in_array(Auth::user()->role, $roles)) {
+            return redirect('/')->with('error', 'Anda tidak memiliki akses ke halaman ini.');
         }
 
-        // Lanjutkan ke request berikutnya jika pengguna memiliki role yang sesuai
         return $next($request);
     }
 }

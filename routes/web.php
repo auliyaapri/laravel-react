@@ -48,45 +48,52 @@ Route::get('/', function () {
 //     Route::put('/mahasiswa/update/{id}', [MahasiswaController::class, 'update'])->name('mahasiswa.update');
 // });
 
-// =================== ADMIN ==================
-    Route::middleware(['auth', 'role:admin'])->group(function () {
-        Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
-        Route::get('/matakuliah', [AdminController::class, 'matakuliah'])->name('matakuliah.admin');
-        Route::get('/mahasiswa', [AdminController::class, 'mahasiswa'])->name('mahasiswa.admin');
-        Route::get('/matakuliah/edit/{id}', [AdminMatakuliahController::class, 'edit'])->name('matakuliah.edit.admin');
-        Route::put('/matakuliah/{id}', [AdminMatakuliahController::class, 'update'])->name('matakuliah.update.admin');
-
-        Route::get('/kehadiran', [AdminController::class, 'kehadiran'])->name('kehadiran.admin');
-        Route::get('/kehadiran/edit/{id}', [AdminKehadiranController::class, 'edit'])->name('kehadiran.edit.admin');
-        Route::put('/kehadiran/{id}', [AdminKehadiranController::class, 'update'])->name('kehadiran.update.admin');
-    });
-// =================== ADMIN ==================
-
-Route::middleware(['auth', 'role:mahasiswa'])->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-        Route::get('/matakuliah', [MatakuliahController::class, 'index'])->name('matakuliah.index');
-        Route::get('/matakuliah/detail/{id}', [MatakuliahController::class, 'show'])->name('matakuliah.show');
-//     Route::get('/mahasiswa', [MahasiswaController::class, 'index'])->name('mahasiswa.index');
-//     Route::get('/mahasiswa/add', [MahasiswaController::class, 'formAdd'])->name('mahasiswa.add');
-//     Route::get('/mahasiswa/edit/{id}', [MahasiswaController::class, 'edit'])->name('mahasiswa.edit');
-//     Route::delete('/mahasiswa/delete/{id}', [MahasiswaController::class, 'destroy'])->name('mahasiswa.destroy');
-//     Route::put('/mahasiswa/update/{id}', [MahasiswaController::class, 'update'])->name('mahasiswa.update');
-});
 
 
-
-
-// =================== MAHASISWA ==================
 // Route::middleware(['auth', 'role:mahasiswa'])->group(function () {
+//     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+//         Route::get('/matakuliah', [MatakuliahController::class, 'index'])->name('matakuliah.index');
+//         Route::get('/matakuliah/kehadiran/{id}', [MatakuliahController::class, 'show'])->name('matakuliah.show');        
+//         Route::post('/kehadiran/tambah', [MatakuliahController::class, 'storeKehadiran'])->name('kehadiran.create');
 
-    
+
+//         //     Route::get('/mahasiswa', [MahasiswaController::class, 'index'])->name('mahasiswa.index');
+// //     Route::get('/mahasiswa/add', [MahasiswaController::class, 'formAdd'])->name('mahasiswa.add');
+// //     Route::get('/mahasiswa/edit/{id}', [MahasiswaController::class, 'edit'])->name('mahasiswa.edit');
+// //     Route::delete('/mahasiswa/delete/{id}', [MahasiswaController::class, 'destroy'])->name('mahasiswa.destroy');
+// //     Route::put('/mahasiswa/update/{id}', [MahasiswaController::class, 'update'])->name('mahasiswa.update');
 // });
 
 
 
 
-    
-    
+// =================== ADMIN ==================
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('dashboard');
+    Route::get('/admin/matakuliah', [AdminController::class, 'matakuliah'])->name('matakuliah.admin');
+    Route::get('/admin/mahasiswa', [AdminController::class, 'mahasiswa'])->name('mahasiswa.admin');
+    Route::get('/admin/matakuliah/edit/{id}', [AdminMatakuliahController::class, 'edit'])->name('matakuliah.edit.admin');
+    Route::put('/admin/matakuliah/{id}', [AdminMatakuliahController::class, 'update'])->name('matakuliah.update.admin');
+
+    Route::get('/admin/kehadiran', [AdminController::class, 'kehadiran'])->name('kehadiran.admin');
+    Route::get('/admin/kehadiran/edit/{id}', [AdminKehadiranController::class, 'edit'])->name('kehadiran.edit.admin');
+    Route::put('/admin/kehadiran/{id}', [AdminKehadiranController::class, 'update'])->name('kehadiran.update.admin');
+});
+// =================== ADMIN ==================
+
+Route::middleware(['auth', 'role:mahasiswa'])->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+        Route::get('/matakuliah', [MatakuliahController::class, 'index'])->name('matakuliah.index');
+        Route::get('/matakuliah/kehadiran/{id}', [MatakuliahController::class, 'show'])->name('matakuliah.show');        
+        Route::post('/kehadiran/tambah', [MatakuliahController::class, 'storeKehadiran'])->name('kehadiran.create');
+
+
+        //     Route::get('/mahasiswa', [MahasiswaController::class, 'index'])->name('mahasiswa.index');
+//     Route::get('/mahasiswa/add', [MahasiswaController::class, 'formAdd'])->name('mahasiswa.add');
+//     Route::get('/mahasiswa/edit/{id}', [MahasiswaController::class, 'edit'])->name('mahasiswa.edit');
+//     Route::delete('/mahasiswa/delete/{id}', [MahasiswaController::class, 'destroy'])->name('mahasiswa.destroy');
+//     Route::put('/mahasiswa/update/{id}', [MahasiswaController::class, 'update'])->name('mahasiswa.update');
+});
 
 
 require __DIR__.'/auth.php';
