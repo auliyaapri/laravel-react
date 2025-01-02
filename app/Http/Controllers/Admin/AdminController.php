@@ -52,50 +52,22 @@ class AdminController extends Controller
             'matakuliah_jadwalPerkuliahan' => $matakuliah_jadwalPerkuliahan,
         ]);
     }
-
-
-    // public function kehadiran()
-    // {
-    //     $kehadiran = Kehadiran::with('mahasiswa')->get();
-    //     $matakuliah_jadwalPerkuliahan = JadwalPerkuliahan::with('matakuliah')->get();
-    //     $data = [
-    //         'kehadirans' => $kehadiran,
-    //         'matakuliah_jadwalPerkuliahans' => $matakuliah_jadwalPerkuliahan,
-    //     ];
-    //     // dd(json_encode($data));
-
-    //     return Inertia::render('Admin/Kehadiran', [
-    //             'data_kehadiran' => $data
-    //     ]);        
-    // }
-
-
     public function kehadiran()
     {
-        // Ambil hanya 5 data kehadiran dengan relasi mahasiswa dan jadwal perkuliahan
-        $kehadiran = Kehadiran::with(['mahasiswa', 'jadwal.matakuliah'])->get();
+        // Ambil data kehadiran dengan relasi mahasiswa, tanpa duplikasi berdasarkan mahasiswa_id
+        $kehadiran = Kehadiran::with('mahasiswa')
+            ->select('mahasiswa_id') // Pilih hanya mahasiswa_id
+            ->distinct() // Hindari duplikasi mahasiswa_id
+            ->get();
 
         // Gabungkan data dalam array
         $data = [
             'kehadirans' => $kehadiran,
         ];
 
-        // dd(json_encode($data));
-            return Inertia::render('Admin/Kehadiran', [
+        return Inertia::render('Admin/Kehadiran', [
             'kehadirans' => $data,
         ]);
     }
-
-    // public function kehadiran()
-    // {
-    //     $kehadiran = Kehadiran::with(['mahasiswa', 'matakuliah.jadwal_perkuliahan'])
-    //         ->orderBy(Mahasiswa::select('nama_lengkap')->whereColumn('mahasiswa.id', 'kehadiran.mahasiswa_id'), 'asc') // Order berdasarkan nama_lengkap mahasiswa
-    //         ->get();
-
-    //     // Cek apakah data mahasiswa ada
-    //     return Inertia::render('Admin/Kehadiran', [
-    //         'kehadirans' => $kehadiran,
-    //     ]);
-    // }
 
 }

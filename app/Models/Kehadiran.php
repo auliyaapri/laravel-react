@@ -11,7 +11,6 @@ class Kehadiran extends Model
     protected $fillable = ['status_kehadiran', 'jadwal_id', 'mahasiswa_id'];
     public function mahasiswa()
     {
-        // mahasiswa_id 
         return $this->belongsTo(Mahasiswa::class, 'mahasiswa_id', 'id');
     }
  

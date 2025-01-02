@@ -36,36 +36,28 @@ class AdminKehadiranController extends Controller
         //
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
-        //
+        $data = Kehadiran::with('mahasiswa', 'matakuliah.jadwal_perkuliahan')->find($id);
+
+        return Inertia::render('Admin/Kehadiran/KehadiranMatakuliah', ['kehadirans' => $data]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(string $id)
     {
-        $kehadiran = Kehadiran::with('mahasiswa', 'matakuliah.jadwal_perkuliahan')->find($id);
-        
-        return Inertia::render('Admin/Kehadiran/Edit', ['kehadiran' => $kehadiran]);
-    }
-    public function update(Request $request, string $id)
-    {
-        // Menampilkan data request secara langsung
-        $validated = $request->validate([
-            'status_kehadiran' => 'required|string|max:255'
-        ]);
-        $data = Kehadiran::findOrFail($id);
-        $data->update([
-            'status_kehadiran' => $validated['status_kehadiran'],            
-        ]);
-        return redirect()->route('kehadiran.admin')->with('success', 'Matakuliah dan jadwal berhasil diperbarui.');
+        // $kehadiran = Kehadiran::with('mahasiswa')->find($id);
+        $kehadiran = Mahasiswa::with('kehadiran.matakuliah')->find($id); // intinya kalau mau tampil banyak berdasarkan kondisi tertentu itu relasi nya mulai dari yang hasMany yaa dalam hal ini saya "Mahasiswa"
+        return Inertia::render('Admin/Kehadiran/KehadiranDetail', ['kehadirans' => $kehadiran]);
     }
 
+    public function update(Request $request, string $id)
+    {
+        $data = Kehadiran::findOrFail($id);
+        $data->update([
+            'status_kehadiran' => $request->status_kehadiran,
+        ]);
+        // return redirect()->route('kehadiran.admin')->with('success', 'Status kehadiran berhasil diperbarui.');
+    }
 
 
 

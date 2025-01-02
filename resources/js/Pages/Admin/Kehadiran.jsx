@@ -56,8 +56,6 @@ export default function Kehadiran({ kehadirans }) {
                         <th scope="col" className="px-6 py-3">No</th>
                         <th scope="col" className="px-6 py-3">Nama Lengkap</th>
                         <th scope="col" className="px-6 py-3">NIM</th>
-                        <th scope="col" className="px-6 py-3">Matakuliah</th>
-                        <th scope="col" className="px-6 py-3">Status Kehadiran</th>
                         <th scope="col" className="px-6 py-3">Aksi</th>
                       </tr>
                     </thead>
@@ -69,10 +67,8 @@ export default function Kehadiran({ kehadirans }) {
                           </th>
                           <td className="px-6 py-4">{item.mahasiswa ? item.mahasiswa.nama_lengkap : 'Data tidak tersedia'}</td>
                           <td className="px-6 py-4">{item.mahasiswa ? item.mahasiswa.nim : 'Data tidak tersedia'}</td>
-                          <td className="px-6 py-4">{item.jadwal.matakuliah ? item.jadwal.matakuliah.nama_mata_kuliah : 'Data tidak tersedia'}</td>
-                          <td className="px-6 py-4">{item.mahasiswa ? changeColor(item.status_kehadiran) : 'Data tidak tersedia'}</td>
                           <td className="px-6 py-4">
-                            <button onClick={() => handleEdit(item.id)} className="text-white rounded-md bg-slate-400 px-3 py-2"> Edit{item.id}</button>
+                            <button onClick={() => handleEdit(item.mahasiswa_id)} className="text-white rounded-md bg-slate-400 px-3 py-2"> Edit{item.mahasiswa_id}</button>
                           </td>
                         </tr>
                       ))}

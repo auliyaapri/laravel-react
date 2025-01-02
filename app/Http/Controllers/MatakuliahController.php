@@ -48,6 +48,7 @@ class MatakuliahController extends Controller
             'mahasiswa_id' => $request->mahasiswa_id,
             'jadwal_id' => $request->jadwal_id,
             'status_kehadiran' => $request->status_kehadiran,
+            'created_at' => now(),
         ]);
 
         // Memberikan feedback ke user (redirect atau merender view)

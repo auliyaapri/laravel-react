@@ -2,7 +2,7 @@ import ApplicationLogo from '@/Components/ApplicationLogo';
 import Dropdown from '@/Components/Dropdown';
 import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
-import { Link, usePage } from '@inertiajs/inertia-react';
+import { Link, usePage, useForm } from '@inertiajs/inertia-react';
 import { useState } from 'react';
 
 
@@ -12,6 +12,12 @@ export default function AuthenticatedLayout({ header, children }) {
         useState(false);
     // const isDashboard = route().current
 
+    const { post } = useForm();
+
+    const handleLogout = (e) => {
+        e.preventDefault();
+        post(route('logout'));
+    };
 
     // console.log(isDashboard);
 
@@ -33,11 +39,18 @@ export default function AuthenticatedLayout({ header, children }) {
                                     active={route().current('dashboard')}
                                     className="text-gray-700 hover:text-purple-700"
                                 >
-                                    Dashboard
+                                    Home
                                 </NavLink>
 
                                 {user.role === 'admin' ? (
                                     <>
+                                        <NavLink
+                                            href={route('dashboard.admin')}
+                                            active={route().current('dashboard.admin')}
+                                            className="text-gray-700 hover:text-purple-700"
+                                        >
+                                            Dashboard
+                                        </NavLink>
                                         <NavLink
                                             href={route('mahasiswa.admin')}
                                             active={route().current('mahasiswa.admin')}
@@ -61,7 +74,8 @@ export default function AuthenticatedLayout({ header, children }) {
                                             href={route('kehadiran.admin')}
                                             active={
                                                 route().current('kehadiran.admin') ||
-                                                route().current('kehadiran.edit.admin')
+                                                route().current('kehadiran.edit.admin') ||
+                                                route().current('kehadiran.show.admin')
                                             }
                                             className="text-gray-700 hover:text-purple-700"
                                         >
@@ -70,14 +84,13 @@ export default function AuthenticatedLayout({ header, children }) {
                                     </>
 
                                 ) : (
-                                    <NavLink
-                                            href={route('matakuliah.index')}
-                                            active={route().current('matakuliah.index')}
-                                        className="text-gray-700 hover:text-purple-700"
-                                    >
+                                    <NavLink href={route('matakuliah.index')} active={route().current('matakuliah.index') || route().current('matakuliah.show')} className="text-gray-700 hover:text-purple-700">
                                         Mata Kuliah
                                     </NavLink>
-                                )}
+                                )}                                
+                                <NavLink onClick={handleLogout} className="text-gray-700 hover:text-purple-700">
+                                    Logout
+                                </NavLink>
                             </div>
                         </div>
 

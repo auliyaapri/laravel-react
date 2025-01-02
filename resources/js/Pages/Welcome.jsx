@@ -23,34 +23,23 @@ export default function Welcome() {
                         {auth?.user ? (
                             <>
                                 {dataUser === 'admin' && (
-                                    <a
-                                        href="admin/dashboard"
-                                        className="inline-flex items-center justify-center px-5 py-3 mr-3 text-base font-medium text-center bg-black text-white rounded-lg hover:bg-gray-800 focus:ring-4 focus:ring-primary-300"
-                                    >
+                                    <a href="admin/dashboard" className="inline-flex items-center justify-center px-5 py-3 mr-3 text-base font-medium text-center bg-black text-white rounded-lg hover:bg-gray-800 focus:ring-4 focus:ring-primary-300">
                                         Dashboard ini admin
                                     </a>
                                 )}
 
-                                {dataUser === 'user' && (
-                                    <a
-                                        href="/dashboard"
-                                        className="inline-flex items-center justify-center px-5 py-3 mr-3 text-base font-medium text-center bg-black text-white rounded-lg hover:bg-gray-800 focus:ring-4 focus:ring-primary-300"
-                                    >
+                                {dataUser === 'mahasiswa' && (
+                                    <a href="/dashboard" className="inline-flex items-center justify-center px-5 py-3 mr-3 text-base font-medium text-center bg-black text-white rounded-lg hover:bg-gray-800 focus:ring-4 focus:ring-primary-300">
                                         Dashboard ini user
                                     </a>
                                 )}
 
-                                <span className="text-base font-medium text-gray-700"> Selamat datang, {auth.user.name}!
-                                </span>
+                                <span className="text-base font-medium text-gray-700"> Selamat datang, {auth.user.name}!</span>
                             </>
                         ) : (
                             <>
-                                <a href="/login" className="inline-flex items-center justify-center px-5 py-3 mr-3 text-base font-medium text-center bg-black text-white rounded-lg hover:bg-gray-800 focus:ring-4 focus:ring-primary-300"
-                                > Login <svg className="w-5 h-5 ml-2 -mr-1"fill="currentColor"viewBox="0 0 20 20"xmlns="http://www.w3.org/2000/svg" ><path    fillRule="evenodd"    d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"         clipRule="evenodd"     ></path> </svg>
-                                </a>
-                                <a href="/register" className="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-gray-900 border border-gray-400 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-gray-100"
-                                > Daftar
-                                </a>
+                                <a href="/login" className="inline-flex items-center justify-center px-5 py-3 mr-3 text-base font-medium text-center bg-black text-white rounded-lg hover:bg-gray-800 focus:ring-4 focus:ring-primary-300"> Login <svg className="w-5 h-5 ml-2 -mr-1"fill="currentColor"viewBox="0 0 20 20"xmlns="http://www.w3.org/2000/svg" ><path    fillRule="evenodd"    d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"         clipRule="evenodd"     ></path> </svg></a>
+                                <a href="/register" className="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-gray-900 border border-gray-400 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-gray-100"> Daftar</a>
                             </>
                         )}
                     </div>
