@@ -1,52 +1,55 @@
-import React from 'react';
+import React, { useState } from 'react';
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, usePage } from '@inertiajs/inertia-react';
-
-import { format } from 'date-fns';
-import { id } from 'date-fns/locale'; // Locale untuk bahasa Indonesia
+import { Head } from '@inertiajs/inertia-react';
 import { Inertia } from '@inertiajs/inertia';
-export default function Kehadiran({ kehadirans }) {
-  const dataKehadiran = kehadirans.kehadirans
-  console.log(dataKehadiran);
 
+export default function Kehadiran({ kehadirans, search: initialSearch }) {
+  const [search, setSearch] = useState(initialSearch || '');
+  const dataKehadiran = kehadirans.data || kehadirans;
 
-  const changeColor = (statusColor) => {
-    if (statusColor === "Tidak Hadir") {
-      return <span className="text-red-500">{statusColor}</span>;
-    } else if (statusColor === "Hadir") {
-      return <span className="text-green-500">{statusColor}</span>;
-    } else if (statusColor === "Izin") {
-      return <span className="text-yellow-500">{statusColor}</span>;
-    } else if (statusColor === "Terlambat") {
-      return <span className="text-orange-500">{statusColor}</span>;
-    } else {
-      return <span>{statusColor}</span>;
-    }
+  const handleSearch = (e) => {
+    e.preventDefault();
+    Inertia.get(
+      route('kehadiran.admin'),
+      { search },
+      { preserveState: true }
+    );
   };
+
   const handleEdit = (id) => {
-    Inertia.get(route('kehadiran.edit.admin', { id: id })); // Pastikan menggunakan objek Inertia
+    Inertia.get(route('kehadiran.edit.admin', { id: id }));
   };
-
 
   return (
     <div>
       <AuthenticatedLayout
-        header={
-          <h2 className="text-2xl font-bold leading-tight text-gray-800">
-            Kehadiran
-          </h2>
-        }
+        header={<h2 className="text-2xl font-bold leading-tight text-gray-800">Kehadiran</h2>}
       >
         <Head title="Dashboard" />
-
         <div className="py-10 bg-gray-100">
           <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
             <div className="bg-white shadow-md sm:rounded-lg">
               <div className="p-6 space-y-6">
-                <div className="text-center">
+                {/* Search Form */}
+           
+                <div className="flex justify-between items-center">
                   <h1 className="text-xl font-semibold text-gray-800">
-                    Kehadiran
+                    Daftar Kehadiran
                   </h1>
+                  <div className="relative">
+                    <input
+                      type="text"
+                      value={search}
+                      onChange={(e) => setSearch(e.target.value)}
+                      placeholder="Cari mahasiswa..."
+                      className="w-64 px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                    />
+                    <div className="absolute inset-y-0 right-0 flex items-center pr-3">
+                      <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                      </svg>
+                    </div>
+                  </div>
                 </div>
 
                 <div className="relative overflow-x-auto">
@@ -60,22 +63,46 @@ export default function Kehadiran({ kehadirans }) {
                       </tr>
                     </thead>
                     <tbody>
-                      {dataKehadiran.map((item, index) => (
-                        <tr key={index} className={`${index % 2 === 0 ? "bg-white" : "bg-gray-50"} border-b`} >
-                          <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap" >
-                            {index + 1}
-                          </th>
-                          <td className="px-6 py-4">{item.mahasiswa ? item.mahasiswa.nama_lengkap : 'Data tidak tersedia'}</td>
-                          <td className="px-6 py-4">{item.mahasiswa ? item.mahasiswa.nim : 'Data tidak tersedia'}</td>
-                          <td className="px-6 py-4">
-                            <button onClick={() => handleEdit(item.mahasiswa_id)} className="text-white rounded-md bg-slate-400 px-3 py-2"> Edit{item.mahasiswa_id}</button>
+                      {dataKehadiran.length > 0 ? (
+                        dataKehadiran.map((item, index) => (
+                          <tr key={index} className={`${index % 2 === 0 ? "bg-white" : "bg-gray-50"} border-b`}>
+                            <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">{index + 1}</th>
+                            <td className="px-6 py-4">{item.mahasiswa ? item.mahasiswa.nama_lengkap : 'Data tidak tersedia'}</td>
+                            <td className="px-6 py-4">{item.mahasiswa ? item.mahasiswa.nim : 'Data tidak tersedia'}</td>
+                            <td className="px-6 py-4">
+                              <button onClick={() => handleEdit(item.mahasiswa_id)} className="text-white rounded-md bg-slate-400 px-3 py-2">Edit</button>
+                            </td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td colSpan="4" className="px-6 py-4 text-center text-gray-500">
+                            Tidak ada data yang ditemukan
                           </td>
                         </tr>
-                      ))}
+                      )}
                     </tbody>
-
                   </table>
                 </div>
+
+                {/* Pagination */}
+                {kehadirans.links && (
+                  <div className="flex items-center justify-center mt-4">
+                    {kehadirans.links.map((link, index) => (
+                      <button
+                        key={index}
+                        className={`px-3 py-1 mx-1 rounded ${
+                          link.active
+                            ? 'bg-blue-500 text-white'
+                            : 'bg-white text-gray-700 hover:bg-gray-100'
+                        }`}
+                        onClick={() => link.url && Inertia.get(link.url)}
+                        dangerouslySetInnerHTML={{ __html: link.label }}
+                        disabled={!link.url}
+                      />
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
           </div>

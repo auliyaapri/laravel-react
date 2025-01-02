@@ -23,49 +23,7 @@ Route::get('/', function () {
 });
 
 
-// Route::get('/', [DashboardController::class, 'index']);
-
-
-// Route::get('/dashboard', function () {
-//     return Inertia::render('Dashboard');
-// })->middleware(['auth'])->name('dashboard');
-
-
 Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
-
-
-
-
-
-// Route::middleware(['auth', 'role:mahasiswa'])->group(function () {
-//     Route::get('/dashboard', function () {
-//     return Inertia::render('Dashboard');
-// })->name('dashboard');
-
-//     Route::get('/matakuliah', [MatakuliahController::class, 'index'])->name('matakuliah.index');
-//     Route::get('/mahasiswa', [MahasiswaController::class, 'index'])->name('mahasiswa.index');
-//     Route::get('/mahasiswa/add', [MahasiswaController::class, 'formAdd'])->name('mahasiswa.add');
-//     Route::get('/mahasiswa/edit/{id}', [MahasiswaController::class, 'edit'])->name('mahasiswa.edit');
-//     Route::delete('/mahasiswa/delete/{id}', [MahasiswaController::class, 'destroy'])->name('mahasiswa.destroy');
-//     Route::put('/mahasiswa/update/{id}', [MahasiswaController::class, 'update'])->name('mahasiswa.update');
-// });
-
-
-
-// Route::middleware(['auth', 'role:mahasiswa'])->group(function () {
-//     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-//         Route::get('/matakuliah', [MatakuliahController::class, 'index'])->name('matakuliah.index');
-//         Route::get('/matakuliah/kehadiran/{id}', [MatakuliahController::class, 'show'])->name('matakuliah.show');        
-//         Route::post('/kehadiran/tambah', [MatakuliahController::class, 'storeKehadiran'])->name('kehadiran.create');
-
-
-//         //     Route::get('/mahasiswa', [MahasiswaController::class, 'index'])->name('mahasiswa.index');
-// //     Route::get('/mahasiswa/add', [MahasiswaController::class, 'formAdd'])->name('mahasiswa.add');
-// //     Route::get('/mahasiswa/edit/{id}', [MahasiswaController::class, 'edit'])->name('mahasiswa.edit');
-// //     Route::delete('/mahasiswa/delete/{id}', [MahasiswaController::class, 'destroy'])->name('mahasiswa.destroy');
-// //     Route::put('/mahasiswa/update/{id}', [MahasiswaController::class, 'update'])->name('mahasiswa.update');
-// });
-
 
 
 

@@ -55,10 +55,6 @@ class MatakuliahController extends Controller
         return redirect()->route('kehadiran.index') // Ganti dengan route yang sesuai
         ->with('success', 'Kehadiran berhasil disimpan.');
     }
-
-
-
-
     
     public function show(string $id)
     {

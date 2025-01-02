@@ -1,9 +1,13 @@
-import React from 'react'
+import React, { useState } from 'react'
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from '@inertiajs/inertia-react';
 import { usePage } from '@inertiajs/inertia-react';
+import { Inertia } from '@inertiajs/inertia';
 
-export default function Mahasiswa({ mahasiswa }) {
+export default function Mahasiswa({ mahasiswa, search: initialSearch }) {
+  const [search, setSearch] = useState(initialSearch || '');
+
+
   const dataMahasiwa = mahasiswa.data
   console.log(mahasiswa);
 
@@ -20,9 +24,13 @@ export default function Mahasiswa({ mahasiswa }) {
     } else {
       return <>Perempuan</>;
     }
-
-
   };
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    Inertia.get('/admin/mahasiswa', { search });
+  }
+
 
   const updatedMahasiswa = changeName(mahasiswa);
   return (
@@ -48,6 +56,10 @@ export default function Mahasiswa({ mahasiswa }) {
                 </div>
 
                 <div className="relative overflow-x-auto">
+                  <form action="" onSubmit={handleSearch} className="flex justify-end mb-4">
+                    <input type="text" name="search" placeholder="Search" className="border border-gray-300 rounded-md px-2 py-1" value={search} onChange={(e) => setSearch(e.target.value)} />
+                    <button type="submit" className="bg-blue-500 text-white px-4 py-1 rounded-md">Search</button>
+                  </form>
                   <table className="w-full text-sm text-left text-gray-500">
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50">
                       <tr>
@@ -79,22 +91,23 @@ export default function Mahasiswa({ mahasiswa }) {
                       ))}
                     </tbody>
                   </table>
-                  <div className="pagination mt-4">
-                    {mahasiswa.links.map((link, index) => (
-                      <button
-                        key={index}
-                        disabled={!link.url} // Nonaktifkan tombol jika URL tidak ada
-                        onClick={() => handlePagination(link.url)} // Gunakan link.url untuk navigasi
-                        className={`px-4 py-2 border rounded ${link.active
-                          ? "bg-indigo-500 text-white"
-                          : "bg-white"
+                  {mahasiswa.links && (
+                    <div className="flex items-center justify-center mt-4">
+                      {mahasiswa.links.map((link, index) => (
+                        <button
+                          key={index}
+                          className={`px-3 py-1 mx-1 rounded ${
+                            link.active
+                              ? 'bg-blue-500 text-white'
+                              : 'bg-white text-gray-700 hover:bg-gray-100'
                           }`}
-                      >
-                        {/* Tampilkan label tombol tanpa simbol khusus */}
-                        {link.label.replace(/&raquo;|&laquo;/g, "")}
-                      </button>
-                    ))}
-                  </div>
+                          onClick={() => link.url && Inertia.get(link.url)}
+                          dangerouslySetInnerHTML={{ __html: link.label }}
+                          disabled={!link.url}
+                        />
+                      ))}
+                    </div>
+                  )}
                 </div>
 
                 {/* <table

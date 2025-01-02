@@ -30,43 +30,59 @@ class AdminController extends Controller
     {
         $search = $request->input('search');
         $mahasiswa = Mahasiswa::when($search, function ($query, $search) {
-            return $query->where('nama_lengkap', 'like', "%{$search}%")
-                ->orWhere('nim', 'like', "%{$search}%");
-        })->paginate(10); // Tetap gunakan pagination
-        // Render halaman dengan data mahasiswa dan informasi pagination
+            return $query->where(function($q) use ($search) {
+                $q->whereRaw('LOWER(nama_lengkap) LIKE ?', ['%' . strtolower($search) . '%'])
+                  ->orWhereRaw('LOWER(nim) LIKE ?', ['%' . strtolower($search) . '%']);
+            });
+        })->paginate(3);
+
         return Inertia::render('Admin/Mahasiswa', [
             'mahasiswa' => $mahasiswa,
             'search' => $search,
         ]);
     }
 
-    public function matakuliah()
+    public function matakuliah(Request $request)
     {
-        // Mengambil data Matakuliah beserta jadwal perkuliahan terkait dan mengurutkan berdasarkan 'nama_mata_kuliah' secara ascending
-        $matakuliah_jadwalPerkuliahan = Matakuliah::with('jadwal_perkuliahan')
-        ->orderBy('nama_mata_kuliah', 'asc') // Mengurutkan berdasarkan kolom 'nama_mata_kuliah' secara ascending
-        ->get();
+        $search = $request->input('search');
 
-        // Pastikan data sudah diambil sebelum dikirim ke Inertia
+        $matakuliah_jadwalPerkuliahan = Matakuliah::with('jadwal_perkuliahan')
+        ->when($search, function ($query, $search) {
+            return $query->where(function ($q) use ($search) {
+                $q->whereRaw('LOWER(nama_mata_kuliah) LIKE ?', ['%' . strtolower($search) . '%'])
+                    ->orWhereRaw('LOWER(kode_mata_kuliah) LIKE ?', ['%' . strtolower($search) . '%'])
+                    ->orWhereRaw('LOWER(deskripsi) LIKE ?', ['%' . strtolower($search) . '%']);
+            });
+        })
+            ->orderBy('nama_mata_kuliah', 'asc')
+            ->paginate(5); // Menambahkan pagination
+
         return Inertia::render('Admin/Matakuliah', [
             'matakuliah_jadwalPerkuliahan' => $matakuliah_jadwalPerkuliahan,
+            'search' => $search, // Mengirim nilai search ke view
         ]);
     }
-    public function kehadiran()
-    {
-        // Ambil data kehadiran dengan relasi mahasiswa, tanpa duplikasi berdasarkan mahasiswa_id
-        $kehadiran = Kehadiran::with('mahasiswa')
-            ->select('mahasiswa_id') // Pilih hanya mahasiswa_id
-            ->distinct() // Hindari duplikasi mahasiswa_id
-            ->get();
 
-        // Gabungkan data dalam array
-        $data = [
-            'kehadirans' => $kehadiran,
-        ];
+    public function kehadiran(Request $request)
+    {
+        $search = $request->input('search');
+
+        // Menggunakan subquery untuk mendapatkan data unik
+        $kehadiran = Kehadiran::with('mahasiswa')
+            ->select('id', 'mahasiswa_id', 'jadwal_id', 'status_kehadiran', 'created_at', 'updated_at')
+            ->distinct('mahasiswa_id')
+            ->when($search, function ($query, $search) {
+                return $query->whereHas('mahasiswa', function($q) use ($search) {
+                    $q->whereRaw('LOWER(nama_lengkap) LIKE ?', ['%' . strtolower($search) . '%'])
+                      ->orWhereRaw('LOWER(nim) LIKE ?', ['%' . strtolower($search) . '%']);
+                });
+            })
+            ->orderBy('mahasiswa_id')
+            ->paginate(3);
 
         return Inertia::render('Admin/Kehadiran', [
-            'kehadirans' => $data,
+            'kehadirans' => $kehadiran,
+            'search' => $search,
         ]);
     }
 
